@@ -11,6 +11,7 @@ import ProtectedPage from "@/hoc/protectedRoutes";
 export default function TransactionDetailPage() {
   const params = useParams();
   const transactionId = params?.transactionId as string;
+  const [emailCustomer, setEmailCustomer] = useState("");
   const [transaction, setTransaction] = useState<Penjualan>();
   const [loading, setLoading] = useState(true);
   const token = useToken();
@@ -51,7 +52,16 @@ export default function TransactionDetailPage() {
 
   const handleSendEmail = async (transactionId: number) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL_BE}/penjualan/email/${transactionId}`);
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL_BE}/penjualan/email/${transactionId}`,
+        { emailCustomer }, // body dikirim
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       toast.success("Struk berhasil dikirim ke email!");
     } catch (error) {
       toast.error("Gagal mengirim email.");
@@ -148,9 +158,23 @@ export default function TransactionDetailPage() {
           {/* <button onClick={handlePrint} className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition-all">
           Cetak Struk
         </button> */}
-          <button onClick={() => handleSendEmail(transaction.id)} className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-md transition-all">
-            Kirim ke Email
-          </button>
+          <div className="flex flex-col mt-8 w-full max-w-md gap-2">
+            <label htmlFor="email" className="text-sm text-gray-700 font-medium">
+              Email Customer
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={emailCustomer}
+              onChange={(e) => setEmailCustomer(e.target.value)}
+              placeholder="masukkan email customer"
+              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+
+            <button onClick={() => handleSendEmail(transaction.id)} className="mt-2 px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-md transition-all">
+              Kirim ke Email
+            </button>
+          </div>
         </div>
         <button onClick={() => router.push("/transaksi")} className="mt-2 px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-md transition-all">
           Kembali ke laman transaksi
