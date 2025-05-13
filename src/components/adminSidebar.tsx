@@ -14,7 +14,7 @@ import { MdManageHistory } from "react-icons/md";
 export default function SidebarAdmin() {
   const pathname = usePathname();
   const router = useRouter();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const { user } = useSession();
 
   const navItems = [

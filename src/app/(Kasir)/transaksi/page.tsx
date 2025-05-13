@@ -137,11 +137,7 @@ export default function TransaksiPage() {
       );
       const transaksiId = response.data?.penjualanId;
 
-      if (transaksiId) {
-        router.push(`/transaksi/${transaksiId}`);
-      } else {
-        toast.error("Gagal mendapatkan ID transaksi");
-      }
+      router.push(`/transaksi/${transaksiId}`);
     } catch (error: any) {
       console.error("Payment error:", error.message);
       toast.error("Gagal memproses pembayaran");
@@ -174,10 +170,10 @@ export default function TransaksiPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button onClick={() => handleDecreaseQty(item.product.id)} className="px-2 py-1 bg-yellow-400 rounded text-white">
+                    <button onClick={() => handleDecreaseQty(item.product.id)} className="px-2 py-1 h-7 w-7 text-center items-center flex bg-yellow-400 rounded text-white">
                       -
                     </button>
-                    <button onClick={() => handleRemoveFromCart(item.product.id)} className="p-1 bg-red-400 text-white rounded">
+                    <button onClick={() => handleRemoveFromCart(item.product.id)} className="px-2 py-1 h-7 w-7 text-center items-center flex bg-red-400 text-white rounded">
                       <TrashIcon size={16} />
                     </button>
                     <div className="w-24 text-right">Rp {(item.qty >= item.product.qtyMinGrosir ? item.product.hargaJualGrosir * item.qty : item.product.hargaJualRetail * item.qty).toLocaleString()}</div>
@@ -214,29 +210,34 @@ export default function TransaksiPage() {
                       <span>
                         {item.product.nama} x {item.qty}
                       </span>
-                      <span>Rp {(item.qty >= item.product.qtyMinGrosir ? item.product.hargaJualGrosir * item.qty : item.product.hargaJualRetail * item.qty).toLocaleString()}</span>
+                      <span>Rp {(item.qty >= item.product.qtyMinGrosir ? item.product.hargaJualGrosir * item.qty : item.product.hargaJualRetail * item.qty).toLocaleString("id-ID")}</span>
                     </div>
                   ))}
                 </div>
-                <div className="font-bold text-lg text-right">Total: Rp {calculateTotal().toLocaleString()}</div>
+                <div className="font-bold text-lg text-right">Total: Rp {calculateTotal().toLocaleString("id-ID")}</div>
               </div>
 
               <div className="mb-6">
                 <h4 className="font-medium mb-2">Metode Pembayaran:</h4>
-                <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="w-full p-2 border rounded">
+                <div className="flex flex-wrap gap-2 justify-between">
                   {paymentMethods.map((method) => (
-                    <option key={method.id} value={method.id}>
+                    <button
+                      key={method.id}
+                      onClick={() => setPaymentMethod(method.id.toString())}
+                      className={`px-4 py-2 rounded border ${paymentMethod === method.id.toString() ? "bg-blue-400 text-white" : "bg-white text-black hover:bg-gray-100"}`}
+                      disabled={isProcessing}
+                    >
                       {method.nama}
-                    </option>
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
 
               <div className="flex justify-end gap-2">
                 <button onClick={() => setShowPaymentModal(false)} className="px-4 py-2 border rounded hover:bg-gray-100" disabled={isProcessing}>
                   Batal
                 </button>
-                <button onClick={handleConfirmPayment} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300" disabled={isProcessing}>
+                <button onClick={handleConfirmPayment} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-blue-300" disabled={isProcessing || !paymentMethod}>
                   {isProcessing ? "Memproses..." : "Konfirmasi"}
                 </button>
               </div>

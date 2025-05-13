@@ -12,7 +12,7 @@ import { RiDashboardLine } from "react-icons/ri";
 export default function SidebarKasir() {
   const pathname = usePathname();
   const router = useRouter();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const { user } = useSession();
 
   const navItems = [
@@ -55,7 +55,7 @@ export default function SidebarKasir() {
               {isCollapsed ? (
                 <div className="flex items-center justify-center gap-3 max-w-[200px]">
                     <div className="flex bg-blue-300 border-2 border-blue-700 rounded-full h-10 w-10 items-center justify-center">
-                    <p className="text-center font-bold text-white">{worker.username.charAt(0)}</p>
+                    <p className="text-center font-bold text-white">  {worker?.username ? worker.username.charAt(0) : "K"}</p>
                     </div>
                 </div>
               ) : (
