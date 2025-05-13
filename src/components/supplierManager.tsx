@@ -32,6 +32,7 @@ export default function SupplierManager() {
   };
 
   useEffect(() => {
+    if(token)
     fetchSuppliers();
   }, [token]);
 

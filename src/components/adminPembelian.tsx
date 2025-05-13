@@ -58,14 +58,10 @@ export default function PembelianPage() {
     items: [] as Array<{ produkId: number; qty: number; harga: number }>,
   });
 
-  // Fetch data
   const fetchData = async () => {
-    if (!token) return;
     setLoading(true);
     try {
-      // Fetch pembelians
       const pembelianRes = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL_BE}/pembelian`, {
-        params: { page: filters.page, pageSize: filters.pageSize },
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -91,7 +87,9 @@ export default function PembelianPage() {
   };
 
   useEffect(() => {
-    fetchData();
+    if (token) {
+      fetchData();
+    }
   }, [token, filters.page, filters.pageSize]);
 
   const handlePageChange = (newPage: number) => {

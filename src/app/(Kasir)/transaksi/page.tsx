@@ -151,7 +151,6 @@ export default function TransaksiPage() {
       <div className="flex">
         <SidebarKasir />
         <div className="w-2/3 p-4 overflow-y-auto">
-          <h2 className="text-xl font-bold mb-4">Pilih Produk</h2>
           <ProductList onlyAvailable onSelectProduct={handleAddToCart} />
         </div>
 

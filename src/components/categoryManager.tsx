@@ -25,6 +25,7 @@ export default function CategoryManager() {
   };
 
   useEffect(() => {
+    if(token)
     fetchCategories();
   }, [token]);
 

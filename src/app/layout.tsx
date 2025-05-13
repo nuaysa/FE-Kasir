@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 const poppins = Poppins({
   weight: ["300", "400", "600", "700"],
   subsets: ["latin"],
+  variable: '--font-poppins',
   display: "swap",
 });
 
@@ -20,11 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={poppins.className}>
-      <body
-        className={`
-       antialiased`}
-      >
+    <html lang="en">
+      <body className={poppins.className}>
         <Toaster position="top-right" />
         {children}
       </body>

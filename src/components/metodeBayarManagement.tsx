@@ -27,7 +27,9 @@ export default function PaymentMethodManager() {
   };
 
   useEffect(() => {
-    fetchMethods();
+    if (token) {
+      fetchMethods();
+    }
   }, [token]);
 
   const handleSubmit = async (values: { namaMetode: string }, { resetForm }: any) => {
@@ -53,11 +55,7 @@ export default function PaymentMethodManager() {
       {/* Form tambah metode */}
       <Formik initialValues={{ namaMetode: "" }} onSubmit={handleSubmit}>
         <Form className="flex gap-2 items-center mb-4">
-          <Field
-            name="namaMetode"
-            placeholder="Nama metode bayar"
-            className="border px-3 py-2 rounded w-full"
-          />
+          <Field name="namaMetode" placeholder="Nama metode bayar" className="border px-3 py-2 rounded w-full" />
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
             Tambah
           </button>
@@ -69,9 +67,7 @@ export default function PaymentMethodManager() {
         <table className="min-w-full">
           <thead className="bg-blue-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Nama Metode
-              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Metode</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
